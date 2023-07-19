@@ -3,7 +3,7 @@ FROM ubuntu:latest
 RUN ["apt", "update"]
 ENV FLASK_APP=app.py
 ENV FLASK_RUN_HOST=0.0.0.0
-Run ["mkdir","-y","flask_compose"]
+RUN ["mkdir","flask_compose"]
 RUN ["apt","install", "-y","cron"]
 RUN ["apt","install","-y","vim"]
 RUN ["apt","install","-y","pip"]

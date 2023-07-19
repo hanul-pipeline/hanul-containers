@@ -6,6 +6,7 @@ ENV FLASK_RUN_HOST=0.0.0.0
 RUN ["apt","install", "-y","cron"]
 RUN ["apt","install","-y","vim"]
 RUN ["apt","install","-y","pip"]
+RUN ["apt","install","-y","git"]
 RUN ["git","clone","https://github.com/hanul-pipeline/hanul-site-pipeline","/"]
 COPY ["requirements.txt", "requirements.txt"]
 RUN ["pip", "install","-r","requirements.txt"]

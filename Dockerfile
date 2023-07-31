@@ -8,7 +8,8 @@ RUN ["apt","install","-y","vim"]
 RUN ["apt", "install", "-y", "sqlite3"]
 
 RUN ["apt","install","-y","git"]
-RUN ["git","clone","https://github.com/hanul-pipeline/hanul-site-pipeline","/flask_compose"]
+#RUN ["git","clone","https://github.com/hanul-pipeline/hanul-site-pipeline","/flask_compose"]
+RUN ["git", "clone", "--branch", "v1.1.0/flask", "https://github.com/hanul-pipeline/hanul-site-pipeline", "/flask_compose"]
 
 RUN ["apt", "install", "-y", "python3-pip"]
 RUN ["pip", "install", "mysql-connector-python"] 

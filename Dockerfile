@@ -20,6 +20,6 @@ RUN ["tar", "xvf", "node_exporter-1.6.1.linux-amd64.tar.gz"]
 RUN ["cp", "node_exporter-1.6.1.linux-amd64/node_exporter", "/usr/local/bin/"]
 
 
-WORKDIR /flask-compose/src/flask
+WORKDIR /flask_compose/src/flask
 
 CMD ["bash", "-c", "python3 curl.py & node_exporter"]

@@ -10,10 +10,12 @@ RUN ["apt-get", "install", "-y", "sqlite3"]
 RUN ["apt-get","install","-y","git"]
 #RUN ["git","clone","https://github.com/hanul-pipeline/hanul-site-pipeline","/flask_compose"]
 RUN ["git", "clone", "--branch", "v1.1.0/flask", "https://github.com/hanul-pipeline/hanul-site-pipeline", "/flask_compose"]
+WORKDIR /flask_compose/src/flask
+COPY requirements.txt .
+
+RUN ["pip3", "install", "-r", "requirements.txt"]
 
 RUN ["apt-get", "install", "-y", "python3-pip"]
-RUN ["pip3", "install", "mysql-connector-python"]
-RUN ["pip3", "install", "flask"] 
 
 RUN ["apt-get", "install", "-y", "wget"]
 RUN ["wget", "https://github.com/prometheus/node_exporter/releases/download/v1.6.1/node_exporter-1.6.1.linux-amd64.tar.gz"]
@@ -21,6 +23,6 @@ RUN ["tar", "xvf", "node_exporter-1.6.1.linux-amd64.tar.gz"]
 RUN ["cp", "node_exporter-1.6.1.linux-amd64/node_exporter", "/usr/local/bin/"]
 
 
-WORKDIR /flask_compose/src/flask
+
 
 CMD ["bash", "-c", "python3 curl.py & node_exporter"]

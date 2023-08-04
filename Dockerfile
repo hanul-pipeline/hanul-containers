@@ -9,7 +9,7 @@ RUN ["apt-get", "update"]
 # INSTALL APT-GET & PIP3 MODULES
 RUN ["xargs", "-a", "/apt_requirements.txt", "apt-get", "install", "-y"]
 RUN ["pip3", "install", "-r", "/pip_requirements.txt"]
-
+RUN ["pip3", "install", "apache-airflow==2.6.1", "--constraint", "https://raw.githubusercontent.com/apache/airflow/constraints-2.6.1/constraints-3.8.txt"]
 # CLONE GIT REPOSITORY
 RUN ["git", "clone", "--branch", "v1.1.0/flask", "https://github.com/hanul-pipeline/hanul-site-pipeline", "/flask_compose"]
 

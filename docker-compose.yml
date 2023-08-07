@@ -1,8 +1,52 @@
-version: 'v1.2.0'
+version: 'v1.2.1'
 services:
   web:
     build: .
     ports:
       - "9000:9000"
       - "9100:9100"
+  
+  airflow-webserver:
+    image: apache/airflow:2.6.1
+    container_name: airflow_webserver
+    volumes:
+      - ./dags:/opt/airflow/dags
+      - ./logs:/opt/airflow/logs
+      - ./plugins:/opt/airflow/plugins
+      - ./airflow.cfg:/opt/airflow/airflow.cfg
+    ports:
       - "8080:8080"
+    environment:
+      - AIRFLOW__CORE__SQL_ALCHEMY_CONN=sqlite:////opt/airflow/airflow.db
+      - AIRFLOW__CORE__FERNET_KEY=myFernetKey
+      - AIRFLOW__WEBSERVER__SECRET_KEY=mySecretKey
+      - AIRFLOW__CORE__LOAD_EXAMPLES=False
+    command: ["webserver"]
+
+  airflow-scheduler:
+    image: apache/airflow:2.6.1
+    container_name: airflow_scheduler
+    volumes:
+      - ./dags:/opt/airflow/dags
+      - ./logs:/opt/airflow/logs
+      - ./plugins:/opt/airflow/plugins
+      - ./airflow.cfg:/opt/airflow/airflow.cfg
+    environment:
+      - AIRFLOW__CORE__SQL_ALCHEMY_CONN=sqlite:////opt/airflow/airflow.db
+      - AIRFLOW__CORE__FERNET_KEY=myFernetKey
+      - AIRFLOW__CORE__LOAD_EXAMPLES=False
+    command: ["scheduler"]
+
+  airflow-worker:
+    image: apache/airflow:2.6.1
+    container_name: airflow_worker
+    volumes:
+      - ./dags:/opt/airflow/dags
+      - ./logs:/opt/airflow/logs
+      - ./plugins:/opt/airflow/plugins
+      - ./airflow.cfg:/opt/airflow/airflow.cfg
+    environment:
+      - AIRFLOW__CORE__SQL_ALCHEMY_CONN=sqlite:////opt/airflow/airflow.db
+      - AIRFLOW__CORE__FERNET_KEY=myFernetKey
+      - AIRFLOW__CORE__LOAD_EXAMPLES=False
+    command: ["worker"]

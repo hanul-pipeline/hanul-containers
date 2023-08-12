@@ -11,7 +11,7 @@ RUN ["xargs", "-a", "/apt_requirements.txt", "apt-get", "install", "-y"]
 RUN ["pip3", "install", "-r", "/pip_requirements.txt"]
 
 # CLONE GIT REPOSITORY
-RUN ["git", "clone", "--branch", "v1.1.0/flask", "https://github.com/hanul-pipeline/hanul-site-pipeline", "/flask_compose"]
+RUN ["git", "clone", "--branch", "v2.0.0/FastAPI", "https://github.com/hanul-pipeline/hanul-site-pipeline", "/hanul"]
 
 # ETC
 # INSTALL NODE EXPORTER
@@ -21,6 +21,6 @@ RUN ["cp", "node_exporter-1.6.1.linux-amd64/node_exporter", "/usr/local/bin/"]
 
 # ETC
 # RUN NODE EXPORTER & APP
-WORKDIR /flask_compose/src/flask
-CMD ["bash", "-c", "python3 curl.py & node_exporter"]
+WORKDIR /hanul
+CMD ["bash", "-c", "uvicorn main:app --host 0.0.0.0 --port 9000 & node_exporter"]
 # CMD ["bash", "-c", "python3 curl.py & node_exporter & airflow standalone"]

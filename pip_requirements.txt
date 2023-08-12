@@ -1,3 +1,4 @@
 mysql-connector-python
-flask
+fastapi
+uvicorn[standard]
 apache-airflow==2.6.1 --constraint "https://raw.githubusercontent.com/apache/airflow/constraints-2.6.1/constraints-3.8.txt"

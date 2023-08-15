@@ -11,7 +11,8 @@ RUN ["xargs", "-a", "/apt_requirements.txt", "apt-get", "install", "-y"]
 RUN ["pip3", "install", "-r", "/pip_requirements.txt"]
 
 # CLONE GIT REPOSITORY
-RUN ["git", "clone", "--branch", "v2.0.0/FastAPI", "https://github.com/hanul-pipeline/hanul-site-pipeline", "/hanul"]
+# RUN ["git", "clone", "--branch", "v2.0.0/FastAPI", "https://github.com/hanul-pipeline/hanul-site-pipeline", "/hanul"]
+RUN ["git", "clone", "https://github.com/hanul-pipeline/hanul-site-pipeline", "/hanul"]
 
 # ETC
 # INSTALL NODE EXPORTER

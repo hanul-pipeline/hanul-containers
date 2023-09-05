@@ -9,7 +9,6 @@ import pendulum, requests
 local_tz = pendulum.timezone('Asia/Seoul')
 SERVER_API = Variable.get("SERVER_API")
 
-# 프로젝트의 모든 DAG 공통 사항 기재
 default_args = {
     "owner" : "Hanul",
     "depends_on_past" : False,
@@ -18,20 +17,18 @@ default_args = {
     "retry_delay" : timedelta(seconds=15)
 }
 
-# 프로젝트마다 변동될 DAG 사항들 기재
 dag = DAG(
-    'hanul-airflow',
+    'blob.119',
     description='Test DAG',
     tags=['hanul', 'curl', 'gcs'],
-    max_active_runs=1, # 동시에 실행되는 DAG의 수
-    concurrency=1, # 동시에 실행되는 작업의 수
+    max_active_runs=1,
+    concurrency=1,
     schedule_interval='5 * * * *',
     default_args=default_args
 )
 
-
 def check_db():
-    api_url = f'http://{SERVER_API}/flags/404'
+    api_url = f'http://{SERVER_API}/flags/119'
     response = requests.get(api_url)
     data = response.text
     if data == '0':
@@ -39,13 +36,32 @@ def check_db():
     else:
         return 'ERROR'
     
-    
-start = EmptyOperator(task_id="start", dag=dag)
-check_flag = BranchPythonOperator(task_id='Check.Flag',python_callable=check_db, dag=dag)
-blob = BashOperator(task_id = "BLOB", bash_command= f'curl http://{SERVER_API}/blob/404', dag = dag)
-error = EmptyOperator(task_id = 'ERROR', dag = dag)
-end = EmptyOperator(task_id="end", dag=dag)
+start = EmptyOperator(
+    task_id="start",
+    dag=dag
+    )
 
-start >> check_flag >> blob
-check_flag >> error
+check_flag = BranchPythonOperator(
+    task_id='Check.Flag',
+    python_callable=check_db, 
+    dag=dag)
+
+blob = BashOperator(
+    task_id = "BLOB", 
+    bash_command= f'curl http://{SERVER_API}/blob/119', 
+    dag=dag)
+
+error = BashOperator(
+    task_id = 'ERROR', 
+    bash_command = f"""
+    curl -X POST -H 'Authorization: Bearer fxANtArqOzDWxjissz34JryOGhwONGhC1uMN8qc59Z3' -F '{datetime.now().strftime('%y%m%d')} : 119 BLOB ERROR' https://notify-api.line.me/api/notify
+    """,
+    dag = dag
+)
+
+end = EmptyOperator(
+    task_id="end", 
+    dag=dag)
+
+start >> check_flag >> [blob, error]
 blob >> end
